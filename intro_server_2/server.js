@@ -1,29 +1,52 @@
-var http = require('http');
-var url = require('url');
-var querrystring = require('querystring');
+var http = require("http");
+var url = require("url");
+var querrystring = require("querystring");
+const events = require("events");
 
+const result = [];
 
-const webserver = http.createServer(function(req, resp) {
+var hello = function hello() {
+  console.log("hello");
+  result.push("hello");
+};
 
-    var page = url.parse(req.url).pathname;
-    var str = '';
+var hellobonjour = function hellobonjour() {
+  console.log("hellobonjour");
+  result.push("hellobonjour");
+};
 
-    switch (page) {
-        case '/':
-            resp.writeHead(200);
-            str = "Bienvenue";
-            break;
-        case '/hello':
-            resp.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-            str = "<h1>Hello world!</h1>";
-            break;
-        default:
-            resp.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
-            str = "Non trouvé";
-            break;
-    }
-    resp.end(str);
+var hellorequest = function hellorequest() {
+  console.log("hellorequest");
+};
 
-})
+const handler = new events.EventEmitter();
+handler.addListener("_requete", hellorequest);
+handler.addListener("/hello", hello);
+handler.addListener("/hello/bonjour", hellobonjour);
+
+const webserver = http.createServer(function (req, resp) {
+  var page = url.parse(req.url).pathname;
+  var param = querrystring.parse(url.parse(req.url).query);
+
+  handler.emit("_requete");
+
+  result.splice(0, result.length);
+
+  handler.emit(page);
+
+  if (result.length > 0) {
+    resp.writeHead(200, { "Content-type": "application/json; charset=utf-8" });
+    let json = JSON.stringify(result);
+    console.log(json);
+    resp.end(json);
+  } else {
+    resp.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+    console.log("erreur 404");
+    resp.end("404 : File not found");
+  }
+
+  /*   resp.writeHead(200);
+  resp.end("hello world"); */
+});
 
 webserver.listen(8080);
