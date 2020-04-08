@@ -1,0 +1,12 @@
+{
+  "name": "intro-modules",
+  "version": "1.0.0",
+  "description": "introduction aux modules NMP",
+  "main": "main.js",
+  "scripts": {
+    "start":"node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
