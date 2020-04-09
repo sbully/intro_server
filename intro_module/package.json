@@ -4,9 +4,13 @@
   "description": "introduction aux modules NMP",
   "main": "main.js",
   "scripts": {
-    "start":"node main.js",
+    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "semver": "^7.2.1"
+  }
 }

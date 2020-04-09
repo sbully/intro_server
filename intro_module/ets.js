@@ -26,5 +26,5 @@ Developer.prototype = new Employee;
 module.exports = {
   Employee: Employee,
   Manager: Manager,
-  Developer: Developer,
-};
+  Developer: Developer
+}
